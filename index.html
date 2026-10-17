@@ -107,7 +107,7 @@ var texts=[""],imgs=[];
 var $=function(i){return document.getElementById(i)};
 function msg(t){$("msg").textContent=t||""}
 function dt(){return "التاريخ /"}
-function fname(x){var n=$("nm").value.replace(/[^\w\u0600-\u06FF ]/g,"").trim();return (n||"كتاب-رسمي")+"."+x}
+function fname(x){var c=function(v){return v.replace(/[^\w\u0600-\u06FF ]/g,"").trim()};var p=[c($("nm").value),c($("sub").value)].filter(Boolean);return (p.join(" - ")||"كتاب-رسمي")+"."+x}
 function attText(){var t=$("attT").value.trim();if(imgs.length)t+=(t?"\n":"")+"(الصور مرفقة في الصفحة التالية)";return t}
 function render(){
 $("vTo").textContent=$("to").value.trim()||".......";
