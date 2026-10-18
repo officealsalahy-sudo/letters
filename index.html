@@ -40,10 +40,12 @@ button{font:inherit;cursor:pointer;border:0;border-radius:8px;padding:9px 14px}
 select{width:100%;font:inherit;font-size:15px;padding:8px;border:1px solid var(--bd);border-radius:8px;background:var(--bg);color:var(--tx)}
 .stage{overflow:hidden}
 .page{width:210mm;height:296mm;background:#fff;color:#000;padding:8mm;margin:0 auto 14px;box-shadow:0 2px 12px #0004;overflow:hidden}
-.frame{height:100%;border:4px double #000;display:flex;flex-direction:column;padding:16mm 14mm 0;font-family:var(--ff,Arial),Tahoma,sans-serif;font-size:var(--fs,16pt);font-weight:700;color:var(--fc,#000);line-height:var(--lh,1.7)}
+.frame{height:100%;border:4px double #000;display:flex;flex-direction:column;padding:16mm 14mm 0;font-family:var(--ff,Arial),Tahoma,sans-serif;font-size:var(--fs,16pt);font-weight:var(--fbw,700);color:var(--fc,#000);line-height:var(--lh,1.7)}
 .frame p{margin:0}
 .subject{text-align:center;margin:10px 0 18px!important}
-.body p{text-align:justify;font-weight:var(--bw,400)}
+.u{font-family:var(--uff,Arial),Tahoma,sans-serif;font-size:var(--ufs,16pt);color:var(--ufc,#000);font-weight:700}
+div.u{line-height:var(--ulh,1.7)}
+.body p{text-align:justify;font-family:var(--uff,Arial),Tahoma,sans-serif;font-size:var(--ufs,16pt);color:var(--ufc,#000);line-height:var(--ulh,1.7);font-weight:var(--ubw,400)}
 .sp{flex:1}
 .closing{text-align:center;margin:12px 0 10px!important}
 .att{margin-top:26px;font-size:12pt}
@@ -62,8 +64,9 @@ select{width:100%;font:inherit;font-size:15px;padding:8px;border:1px solid var(-
 <div class="editor">
 <h2>الجهة</h2>
 <label>السيد ... المحترم (اكتب الجهة فقط)</label>
-<input id="to" list="mins" placeholder="معالي وزير التربية">
-<datalist id="mins"><option value="معالي وزير التربية"><option value="معالي وزير النفط"><option value="معالي وزير التعليم العالي والبحث العلمي"><option value="معالي وزير الصحة"><option value="معالي وزير الكهرباء"><option value="معالي وزير الداخلية"></datalist>
+<select id="toSel"></select>
+<input id="to" list="mins" placeholder="أو اكتب الجهة بنفسك" style="margin-top:6px">
+<datalist id="mins"></datalist>
 <label>الموضوع (م/)</label>
 <input id="sub">
 
@@ -84,14 +87,22 @@ select{width:100%;font:inherit;font-size:15px;padding:8px;border:1px solid var(-
 <h2 style="display:none"></h2>
 <input id="no" type="hidden">
 
-<h2>تنسيق الكتاب</h2>
+<h2>تنسيق الثوابت (الجهة، بواسطة، تحية، الموضوع، الشكر، العدد، التاريخ)</h2>
 <label>نوع الخط</label>
 <select id="ff"><option>Arial</option><option>Tahoma</option><option>Times New Roman</option><option>Simplified Arabic</option><option>Traditional Arabic</option><option>Noto Naskh Arabic</option></select>
 <div class="row"><div style="flex:1"><label>حجم الخط</label><select id="fs"><option>12</option><option>13</option><option>14</option><option>15</option><option selected>16</option><option>17</option><option>18</option><option>20</option></select></div><div style="flex:1"><label>تباعد الأسطر</label><select id="lh"><option value="1.4">ضيق</option><option value="1.7" selected>متوسط</option><option value="2">واسع</option></select></div></div>
 <label>لون الخط</label>
 <input type="hidden" id="fc" value="#000000">
 <div id="cols" class="row" style="align-items:center;flex-wrap:wrap"></div>
-<label style="display:flex;gap:8px;align-items:center"><input type="checkbox" id="bw" style="width:auto"> الكليشة بخط عريض</label>
+<label style="display:flex;gap:8px;align-items:center"><input type="checkbox" id="bw" style="width:auto" checked> الثوابت بخط عريض</label>
+<h2>تنسيق الكليشة ومقدم الطلب (الكليشة، الاسم، الهاتف، السكن)</h2>
+<label>نوع الخط</label>
+<select id="uff"><option>Arial</option><option>Tahoma</option><option>Times New Roman</option><option>Simplified Arabic</option><option>Traditional Arabic</option><option>Noto Naskh Arabic</option></select>
+<div class="row"><div style="flex:1"><label>حجم الخط</label><select id="ufs"><option>12</option><option>13</option><option>14</option><option>15</option><option selected>16</option><option>17</option><option>18</option><option>20</option></select></div><div style="flex:1"><label>تباعد الأسطر</label><select id="ulh"><option value="1.4">ضيق</option><option value="1.7" selected>متوسط</option><option value="2">واسع</option></select></div></div>
+<label>لون الخط</label>
+<input type="hidden" id="ufc" value="#000000">
+<div id="ucols" class="row" style="align-items:center;flex-wrap:wrap"></div>
+<label style="display:flex;gap:8px;align-items:center"><input type="checkbox" id="ubw" style="width:auto"> الكليشة بخط عريض</label>
 <div class="btns"><button id="bPrn">طباعة</button><button id="bPdf">حفظ PDF</button><button id="bDoc">حفظ Word</button></div>
 <div id="msg"></div>
 </div>
@@ -107,7 +118,7 @@ select{width:100%;font:inherit;font-size:15px;padding:8px;border:1px solid var(-
 <p class="closing">ولكم فائق الشكر والتقدير والاحترام</p>
 <div class="att" id="vAtt" style="display:none"></div>
 <div class="sp"></div>
-<div class="sign"><div>مقدم الطلب</div><div id="vNm">&nbsp;</div><div id="vPh"></div><div id="vAd"></div></div>
+<div class="sign"><div>مقدم الطلب</div><div id="vNm" class="u">&nbsp;</div><div id="vPh" class="u"></div><div id="vAd" class="u"></div></div>
 <div class="foot"><span id="vNo"></span><span id="vDt"></span><span></span></div>
 </div>
 </div>
@@ -120,7 +131,8 @@ function msg(t){$("msg").textContent=t||""}
 function dt(){return "التاريخ /"}
 function fname(x){var c=function(v){return v.replace(/[^\w\u0600-\u06FF ]/g,"").trim()};var p=[c($("nm").value),c($("sub").value)].filter(Boolean);return (p.join(" - ")||"كتاب-رسمي")+"."+x}
 function attText(){var t=$("attT").value.trim();if(imgs.length)t+=(t?"\n":"")+"(الصور مرفقة في الصفحة التالية)";return t}
-function styl(){var p=$("pages").style;p.setProperty("--ff","'"+$("ff").value+"'");p.setProperty("--fs",$("fs").value+"pt");p.setProperty("--fc",$("fc").value);p.setProperty("--lh",$("lh").value);p.setProperty("--bw",$("bw").checked?700:400)}
+function styl(){var p=$("pages").style;p.setProperty("--ff","'"+$("ff").value+"'");p.setProperty("--fs",$("fs").value+"pt");p.setProperty("--fc",$("fc").value);p.setProperty("--lh",$("lh").value);p.setProperty("--fbw",$("bw").checked?700:400);
+p.setProperty("--uff","'"+$("uff").value+"'");p.setProperty("--ufs",$("ufs").value+"pt");p.setProperty("--ufc",$("ufc").value);p.setProperty("--ulh",$("ulh").value);p.setProperty("--ubw",$("ubw").checked?700:400)}
 function render(){styl();
 $("vTo").textContent=$("to").value.trim()||".......";
 $("vSub").textContent="م / "+$("sub").value;
@@ -194,7 +206,11 @@ e.target.value="";
 };
 $("addBox").onclick=function(){texts.push("");buildBoxes();render();var a=document.querySelectorAll("#boxes textarea");a[a.length-1].focus()};
 ["to","sub","nm","ad","ph","no","attT"].forEach(function(i){$(i).oninput=render});
-["ff","fs","lh","bw"].forEach(function(i){$(i).onchange=render});
+["ff","fs","lh","bw","uff","ufs","ulh","ubw"].forEach(function(i){$(i).onchange=render});
+(function(){var c=$("ucols"),cu=document.createElement("input");cu.type="color";cu.value="#000000";cu.style.cssText="width:44px;height:34px;padding:0";
+function pick(v,b){$("ufc").value=v;Array.prototype.forEach.call(c.querySelectorAll(".dot"),function(x){x.classList.toggle("on",x===b)});render()}
+["#000000","#1e3a8a","#0f766e","#7c2d12","#881337","#4c1d95"].forEach(function(v,i){var b=document.createElement("button");b.className="dot"+(i?"":" on");b.style.background=v;b.onclick=function(){cu.value=v;pick(v,b)};c.appendChild(b)});
+cu.oninput=function(){pick(cu.value,null)};c.appendChild(cu)})();
 (function(){var c=$("cols"),cu=document.createElement("input");cu.type="color";cu.value="#000000";cu.style.cssText="width:44px;height:34px;padding:0";
 function pick(v,b){$("fc").value=v;Array.prototype.forEach.call(c.querySelectorAll(".dot"),function(x){x.classList.toggle("on",x===b)});render()}
 ["#000000","#1e3a8a","#0f766e","#7c2d12","#881337","#4c1d95"].forEach(function(v,i){var b=document.createElement("button");b.className="dot"+(i?"":" on");b.style.background=v;b.onclick=function(){cu.value=v;pick(v,b)};c.appendChild(b)});
@@ -237,18 +253,19 @@ try{
 var D=window.docx;if(!D){msg("مكتبة Word ما تحمّلت");return}
 var dl=await getDl();if(!dl)return;
 var L=D.AlignmentType.LEFT,R=D.AlignmentType.RIGHT,C=D.AlignmentType.CENTER,J=D.AlignmentType.JUSTIFIED;
-var FF=$("ff").value,FS=+$("fs").value,FC=$("fc").value.slice(1),LN=Math.round(240*+$("lh").value);
-function run(t,b,s){return new D.TextRun({text:t,bold:b!==false,size:s||FS*2,color:FC,rightToLeft:true,font:FF})}
-function para(t,al,before,b,s){return new D.Paragraph({bidirectional:true,alignment:al,spacing:{before:before||0,after:120,line:LN},children:[run(t,b,s)]})}
-var ch=[para("السيد "+($("to").value.trim()||".......")+" المحترم",L),para("بواسطة السيد النائب حسين العنكوشي المحترم",L),para("تحية طيبة ...",L),para("م / "+$("sub").value,C,120)];
-texts.forEach(function(t){if(t.trim())ch.push(para(t,J,0,$("bw").checked))});
+var G={f:{ff:$("ff").value,s:+$("fs").value,c:$("fc").value.slice(1),ln:Math.round(240*+$("lh").value)},u:{ff:$("uff").value,s:+$("ufs").value,c:$("ufc").value.slice(1),ln:Math.round(240*+$("ulh").value)}};
+function run(t,b,s,u){var g=u?G.u:G.f;return new D.TextRun({text:t,bold:b===undefined?(u?true:$("bw").checked):b,size:s||g.s*2,color:g.c,rightToLeft:true,font:g.ff})}
+function para(t,al,before,b,s,u){return new D.Paragraph({bidirectional:true,alignment:al,spacing:{before:before||0,after:120,line:(u?G.u:G.f).ln},children:[run(t,b,s,u)]})}
+function paraM(parts,al,before){return new D.Paragraph({bidirectional:true,alignment:al,spacing:{before:before||0,after:120,line:G.f.ln},children:parts.map(function(p){return run(p[0],undefined,0,p[1])})})}
+var ch=[paraM([["السيد "],[$("to").value.trim()||"......."],[" المحترم"]],L),para("بواسطة السيد النائب حسين العنكوشي المحترم",L),para("تحية طيبة ...",L),paraM([["م / "],[$("sub").value]],C,120)];
+texts.forEach(function(t){if(t.trim())ch.push(para(t,J,0,$("ubw").checked,0,true))});
 ch.push(para("ولكم فائق الشكر والتقدير والاحترام",C,200));
 var a=attText();
 if(a)ch.push(para("المرفقات:",L,400,true,24)),a.split("\n").forEach(function(l){ch.push(para(l,L,0,true,24))});
 ch.push(para("مقدم الطلب",R,a?600:2200));
-ch.push(para($("nm").value||" ",R));
-if($("ph").value)ch.push(para($("ph").value,R));
-if($("ad").value)ch.push(para("السكن: "+$("ad").value,R));
+ch.push(para($("nm").value||" ",R,0,undefined,0,true));
+if($("ph").value)ch.push(para($("ph").value,R,0,undefined,0,true));
+if($("ad").value)ch.push(paraM([["السكن: "],[$("ad").value,true]],R));
 var extra=imgs.map(function(m){var fill=Math.abs(m.w/m.h/0.7071-1)<0.15,w=794,h=1118;if(!fill){var k=Math.min(w/m.w,h/m.h);w=Math.round(m.w*k);h=Math.round(m.h*k)}return {properties:{page:{size:{width:11906,height:16838},margin:{top:0,bottom:0,left:0,right:0,header:0,footer:0}}},footers:{default:new D.Footer({children:[new D.Paragraph({})]})},children:[new D.Paragraph({alignment:C,spacing:{before:0,after:0},children:[new D.ImageRun({data:bytes(m.s),transformation:{width:w,height:h}})]})]}});
 var bd={style:D.BorderStyle.DOUBLE,size:18,color:"000000",space:24};
 var foot=new D.Footer({children:[new D.Paragraph({bidirectional:true,border:{top:{style:D.BorderStyle.SINGLE,size:8,color:"000000",space:4}},children:[run("العدد /"+"\u00a0".repeat(34)),run(dt())]})]});
@@ -258,6 +275,13 @@ await dl.save({filename:fname("docx"),data:blob});
 msg("");
 }catch(e){msg(e&&e.code==="declined"?"":"تعذّر حفظ Word")}
 }
+(function(){
+var W=["الداخلية","الدفاع","الخارجية","المالية","النفط","الكهرباء","التربية","التعليم العالي والبحث العلمي","الصحة","العدل","الإعمار والإسكان والبلديات والأشغال العامة","النقل","الاتصالات","التخطيط","التجارة","الزراعة","الموارد المائية","الصناعة والمعادن","العمل والشؤون الاجتماعية","الثقافة والسياحة والآثار","الشباب والرياضة","الهجرة والمهجرين","البيئة"].map(function(x){return "معالي وزير "+x});
+var L=["دولة رئيس مجلس الوزراء","رئيس أركان الجيش","محافظ الديوانية","مدير مرور الديوانية","مدير المرور العام","مدير بلديات الديوانية","مدير فرع توزيع كهرباء الديوانية","مسؤول قطاع كهرباء الشامية","مدير كهرباء الصلاحية","مسؤول قطاع الشامية الأول","مدير مستشفى الشامية العام"].concat(W);
+var d=$("mins"),s=$("toSel"),o=document.createElement("option");o.value="";o.textContent="اختر الجهة من القائمة";s.appendChild(o);
+L.forEach(function(t){var a=document.createElement("option");a.value=t;a.textContent=t;s.appendChild(a);var b=document.createElement("option");b.value=t;d.appendChild(b)});
+s.onchange=function(){if(s.value){$("to").value=s.value;render()}};
+})();
 $("bPdf").onclick=savePdf;
 $("bDoc").onclick=saveWord;
 $("bPrn").onclick=function(){msg("");try{window.print()}catch(e){msg("الطباعة غير متاحة بهذا العرض، احفظ PDF واطبعه")}};
