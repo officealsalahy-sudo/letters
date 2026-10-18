@@ -130,7 +130,7 @@ var $=function(i){return document.getElementById(i)};
 function msg(t){$("msg").textContent=t||""}
 function dt(){return "التاريخ /"}
 function fname(x){var c=function(v){return v.replace(/[^\w\u0600-\u06FF ]/g,"").trim()};var p=[c($("nm").value),c($("sub").value)].filter(Boolean);return (p.join(" - ")||"كتاب-رسمي")+"."+x}
-function attText(){var t=$("attT").value.trim();if(imgs.length)t+=(t?"\n":"")+"(الصور مرفقة في الصفحة التالية)";return t}
+function attText(){return $("attT").value.trim()}
 function styl(){var p=$("pages").style;p.setProperty("--ff","'"+$("ff").value+"'");p.setProperty("--fs",$("fs").value+"pt");p.setProperty("--fc",$("fc").value);p.setProperty("--lh",$("lh").value);p.setProperty("--fbw",$("bw").checked?700:400);
 p.setProperty("--uff","'"+$("uff").value+"'");p.setProperty("--ufs",$("ufs").value+"pt");p.setProperty("--ufc",$("ufc").value);p.setProperty("--ulh",$("ulh").value);p.setProperty("--ubw",$("ubw").checked?700:400)}
 function render(){styl();
